@@ -2,7 +2,7 @@ package com.chrischeng.router.compiler;
 
 import com.chrischeng.router.annotation.RouterConfig;
 import com.chrischeng.router.annotation.RouterInterceptor;
-import com.chrischeng.router.annotation.RouterRule;
+import com.chrischeng.router.annotation.RouterProtocal;
 import com.chrischeng.router.compiler.exception.RouterAnnotationTargetException;
 import com.chrischeng.router.compiler.model.RouteBasicConfig;
 import com.chrischeng.router.compiler.model.RouteRuleConfig;
@@ -41,7 +41,7 @@ public class CompileProcessor extends AbstractProcessor {
         Set<String> set = new HashSet<>();
 
         set.add(RouterConfig.class.getCanonicalName());
-        set.add(RouterRule.class.getCanonicalName());
+        set.add(RouterProtocal.class.getCanonicalName());
         set.add(RouterInterceptor.class.getCanonicalName());
 
         return set;
@@ -71,7 +71,7 @@ public class CompileProcessor extends AbstractProcessor {
     }
 
     private void processRules(RoundEnvironment roundEnv, RouteBasicConfig routeBasicConfig) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterRule.class);
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterProtocal.class);
 
         if (elements == null || elements.isEmpty())
             return;
@@ -79,9 +79,9 @@ public class CompileProcessor extends AbstractProcessor {
         List<RouteRuleConfig> ruleConfigs = new ArrayList<>();
         for (Element element : elements) {
             if (element.getKind() != ElementKind.CLASS)
-                throw new RouterAnnotationTargetException(element.getSimpleName(), RouterRule.class, ElementKind.CLASS);
+                throw new RouterAnnotationTargetException(element.getSimpleName(), RouterProtocal.class, ElementKind.CLASS);
 
-            ruleConfigs.add(RouteRuleConfig.create(routeBasicConfig, element.getAnnotation(RouterRule.class), (TypeElement) element));
+            ruleConfigs.add(RouteRuleConfig.create(routeBasicConfig, element.getAnnotation(RouterProtocal.class), (TypeElement) element));
         }
 
         try {

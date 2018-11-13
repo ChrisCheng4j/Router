@@ -21,9 +21,9 @@
         </activity>
 
         <activity
-            android:name=".activity.FirstActivity"
+            android:name=".activity.TargetActivity"
             android:screenOrientation="portrait"
-            android:label="First"/>
+            android:label="Target"/>
 
     </application>
 </manifest>

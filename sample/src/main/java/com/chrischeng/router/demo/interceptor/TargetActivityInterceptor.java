@@ -7,11 +7,11 @@ import android.util.Log;
 import com.chrischeng.router.model.RouteTargetBundle;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 
-public class FirstActivityInterceptor implements RouterInterceptor {
+public class TargetActivityInterceptor implements RouterInterceptor {
 
     @Override
     public boolean intercept(Context context, Uri uri) {
-        return true;
+        return false;
     }
 
     @Override
