@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-import com.chrischeng.router.RouteTargetBundle;
+import com.chrischeng.router.model.RouteTargetBundle;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 
 public class FirstActivityInterceptor implements RouterInterceptor {

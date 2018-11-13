@@ -9,13 +9,13 @@ import java.util.List;
 import javax.lang.model.type.MirroredTypesException;
 import javax.lang.model.type.TypeMirror;
 
-public class BasicConfig {
+public class RouteBasicConfig {
 
     public String baseScheme;
     public String pkg;
     public ClassName[] interceptors;
 
-    public BasicConfig(RouterConfig config) {
+    public RouteBasicConfig(RouterConfig config) {
         baseScheme = config.baseScheme();
         pkg = config.pkg();
         parseInterceptors(config);

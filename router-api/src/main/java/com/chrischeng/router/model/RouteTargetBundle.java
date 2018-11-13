@@ -1,8 +1,8 @@
-package com.chrischeng.router;
+package com.chrischeng.router.model;
 
 import android.os.Bundle;
 
-import com.chrischeng.router.callback.RouteCallback;
+import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ public class RouteTargetBundle {
     public Bundle options;
     public int requestCode = -1;
     public int enterAnim = -1, exitAnim = -1;
-    public RouteCallback callback;
+    public RouterCallback callback;
     public List<Class<? extends RouterInterceptor>> interceptors;
 
-    void addInterceptors(Class<? extends RouterInterceptor> interceptor) {
+    public void addInterceptors(Class<? extends RouterInterceptor> interceptor) {
         if (interceptors == null)
             interceptors = new ArrayList<>();
         interceptors.add(interceptor);

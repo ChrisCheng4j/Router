@@ -1,4 +1,4 @@
-package com.chrischeng.router;
+package com.chrischeng.router.manager;
 
 import android.content.Context;
 
@@ -28,7 +28,7 @@ public class RouteManager {
         return Holder.instance;
     }
 
-    void init(Context context) {
+    public void init(Context context) {
         mPkgs = new String[]{"com.chrischeng.router.demo"};
         mContext = context.getApplicationContext();
         collectInfo();

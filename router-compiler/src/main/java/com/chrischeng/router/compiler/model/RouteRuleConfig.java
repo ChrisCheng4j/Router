@@ -12,27 +12,27 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.MirroredTypesException;
 import javax.lang.model.type.TypeMirror;
 
-public class RouterRuleConfig {
+public class RouteRuleConfig {
 
     public TypeElement element;
     public String[] routes;
     public ClassName[] interceptors;
 
-    public static RouterRuleConfig create(BasicConfig basicConfig, RouterRule routerRule, TypeElement element) {
-        RouterRuleConfig ruleConfig = new RouterRuleConfig();
+    public static RouteRuleConfig create(RouteBasicConfig routeBasicConfig, RouterRule routerRule, TypeElement element) {
+        RouteRuleConfig ruleConfig = new RouteRuleConfig();
         ruleConfig.element = element;
-        ruleConfig.routes = ruleConfig.combineRoutes(basicConfig, routerRule, element);
+        ruleConfig.routes = ruleConfig.combineRoutes(routeBasicConfig, routerRule, element);
         ruleConfig.interceptors = ruleConfig.combineInterceptors(element);
         return ruleConfig;
     }
 
-    private String[] combineRoutes(BasicConfig basicConfig, RouterRule routerRule, TypeElement element) {
+    private String[] combineRoutes(RouteBasicConfig routeBasicConfig, RouterRule routerRule, TypeElement element) {
         String[] routerRoutes = routerRule.value();
 
         if (routerRoutes.length == 0)
             return new String[]{};
 
-        String baseScheme = (basicConfig != null) ? basicConfig.baseScheme : "";
+        String baseScheme = (routeBasicConfig != null) ? routeBasicConfig.baseScheme : "";
         URI uri;
         String scheme;
         String route;

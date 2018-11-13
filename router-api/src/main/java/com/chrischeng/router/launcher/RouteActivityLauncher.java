@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import com.chrischeng.router.RouteManager;
-import com.chrischeng.router.RouteTargetBundle;
-import com.chrischeng.router.callback.RouteCallback;
+import com.chrischeng.router.manager.RouteManager;
+import com.chrischeng.router.model.RouteTargetBundle;
+import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.exception.RouterActivityNotFoundException;
 import com.chrischeng.router.exception.RouterInterceptException;
 import com.chrischeng.router.interceptor.RouterInterceptor;
@@ -31,7 +31,7 @@ public class RouteActivityLauncher {
         if (context == null)
             context = RouteManager.getInstance().getContext();
 
-        RouteCallback callback = targetBundle.callback;
+        RouterCallback callback = targetBundle.callback;
 
         RouteUriInfo uriInfo = RouteUriParser.parse(uri);
         RouterRule rule = RouteManager.getInstance().findRule(uriInfo);
@@ -82,7 +82,7 @@ public class RouteActivityLauncher {
         return intent;
     }
 
-    private boolean checkIntercept(Context context, Uri uri, RouterRule rule, RouteTargetBundle targetBundle, RouteCallback callback) {
+    private boolean checkIntercept(Context context, Uri uri, RouterRule rule, RouteTargetBundle targetBundle, RouterCallback callback) {
         try {
             iteratorAllInterceptors(context, uri, rule, targetBundle);
             targetBundle.removeAllInterceptors();
@@ -146,7 +146,7 @@ public class RouteActivityLauncher {
         }
     }
 
-    private boolean checkRule(Uri uri, RouterRule rule, RouteCallback callback) {
+    private boolean checkRule(Uri uri, RouterRule rule, RouterCallback callback) {
         if (rule != null)
             return true;
 

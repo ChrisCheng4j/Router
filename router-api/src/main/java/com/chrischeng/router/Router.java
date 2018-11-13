@@ -4,9 +4,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.chrischeng.router.callback.RouteCallback;
+import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 import com.chrischeng.router.launcher.RouteActivityLauncher;
+import com.chrischeng.router.manager.RouteManager;
+import com.chrischeng.router.model.RouteTargetBundle;
 
 public final class Router {
 
@@ -57,7 +59,7 @@ public final class Router {
         return this;
     }
 
-    public Router setCallback(RouteCallback callback) {
+    public Router setCallback(RouterCallback callback) {
         targetBundle.callback = callback;
         return this;
     }

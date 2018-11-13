@@ -4,8 +4,8 @@ import com.chrischeng.router.annotation.RouterConfig;
 import com.chrischeng.router.annotation.RouterInterceptor;
 import com.chrischeng.router.annotation.RouterRule;
 import com.chrischeng.router.compiler.exception.RouterAnnotationTargetException;
-import com.chrischeng.router.compiler.model.BasicConfig;
-import com.chrischeng.router.compiler.model.RouterRuleConfig;
+import com.chrischeng.router.compiler.model.RouteBasicConfig;
+import com.chrischeng.router.compiler.model.RouteRuleConfig;
 import com.chrischeng.router.compiler.tools.CompileTools;
 
 import java.io.IOException;
@@ -52,8 +52,8 @@ public class CompileProcessor extends AbstractProcessor {
         return SourceVersion.latestSupported();
     }
 
-    private BasicConfig processConfig(RoundEnvironment roundEnv) {
-        BasicConfig config = null;
+    private RouteBasicConfig processConfig(RoundEnvironment roundEnv) {
+        RouteBasicConfig config = null;
 
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterConfig.class);
         if (elements == null || elements.isEmpty())
@@ -63,29 +63,29 @@ public class CompileProcessor extends AbstractProcessor {
             if (element.getKind() != ElementKind.CLASS)
                 throw new RouterAnnotationTargetException(element.getSimpleName(), RouterConfig.class, ElementKind.CLASS);
 
-            config = new BasicConfig(element.getAnnotation(RouterConfig.class));
+            config = new RouteBasicConfig(element.getAnnotation(RouterConfig.class));
             break;
         }
 
         return config;
     }
 
-    private void processRules(RoundEnvironment roundEnv, BasicConfig basicConfig) {
+    private void processRules(RoundEnvironment roundEnv, RouteBasicConfig routeBasicConfig) {
         Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterRule.class);
 
         if (elements == null || elements.isEmpty())
             return;
 
-        List<RouterRuleConfig> ruleConfigs = new ArrayList<>();
+        List<RouteRuleConfig> ruleConfigs = new ArrayList<>();
         for (Element element : elements) {
             if (element.getKind() != ElementKind.CLASS)
                 throw new RouterAnnotationTargetException(element.getSimpleName(), RouterRule.class, ElementKind.CLASS);
 
-            ruleConfigs.add(RouterRuleConfig.create(basicConfig, element.getAnnotation(RouterRule.class), (TypeElement) element));
+            ruleConfigs.add(RouteRuleConfig.create(routeBasicConfig, element.getAnnotation(RouterRule.class), (TypeElement) element));
         }
 
         try {
-            RouterRuleFactory.generateCode(basicConfig, ruleConfigs);
+            RouteRuleGenerator.generateCode(routeBasicConfig, ruleConfigs);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

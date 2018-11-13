@@ -3,7 +3,7 @@ package com.chrischeng.router.interceptor;
 import android.content.Context;
 import android.net.Uri;
 
-import com.chrischeng.router.RouteTargetBundle;
+import com.chrischeng.router.model.RouteTargetBundle;
 
 public interface RouterInterceptor {
 
