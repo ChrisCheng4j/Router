@@ -1,5 +1,6 @@
 package com.chrischeng.router.demo.activity;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,8 @@ import java.util.Locale;
 
 @RouterProtocal("main")
 public class MainActivity extends AppCompatActivity {
+
+    static final int REQUEST_CODE = 1000;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,12 +45,22 @@ public class MainActivity extends AppCompatActivity {
                 Calendar calendar = Calendar.getInstance();
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DATE);
 
-                String uri = String.format(Locale.getDefault(), "router://target?year=%d&month=%s", year, String.valueOf(month));
+                String uri = String.format(Locale.getDefault(), "router://target?year=%1d&month=%2d&day=%3d", year, month, day);
                 Router.create(uri)
                         .setCallback(routerCallback)
+                        .requestCode(REQUEST_CODE)
+                        .overridePendingTransition(0, 0)
                         .route(MainActivity.this);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE)
+            Toast.makeText(MainActivity.this, String.valueOf(resultCode), Toast.LENGTH_SHORT).show();
     }
 }
