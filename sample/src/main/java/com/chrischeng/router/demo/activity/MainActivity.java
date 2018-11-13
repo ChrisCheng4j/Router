@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_first:
-                Router.create("router://first").route(this);
+                Router.create("router://first?").route(this);
                 break;
         }
     }

@@ -12,11 +12,14 @@ import com.chrischeng.router.callback.RouteCallback;
 import com.chrischeng.router.exception.RouterActivityNotFoundException;
 import com.chrischeng.router.exception.RouterInterceptException;
 import com.chrischeng.router.interceptor.RouterInterceptor;
+import com.chrischeng.router.parser.RouteUriInfo;
 import com.chrischeng.router.parser.RouteUriParser;
 import com.chrischeng.router.rule.RouterRule;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RouteActivityLauncher {
 
@@ -29,15 +32,17 @@ public class RouteActivityLauncher {
             context = RouteManager.getInstance().getContext();
 
         RouteCallback callback = targetBundle.callback;
-        RouterRule rule = RouteManager.getInstance().findRule(RouteUriParser.parse(uri));
 
-        if (!checkIntercept(context, uri, rule, targetBundle, callback))
-            return;
+        RouteUriInfo uriInfo = RouteUriParser.parse(uri);
+        RouterRule rule = RouteManager.getInstance().findRule(uriInfo);
 
         if (!checkRule(uri, rule, callback))
             return;
 
-        Intent intent = createIntent(context, rule, targetBundle);
+        if (!checkIntercept(context, uri, rule, targetBundle, callback))
+            return;
+
+        Intent intent = createIntent(context, rule, uriInfo, targetBundle);
         if (context instanceof Activity) {
             Activity activity = (Activity) context;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
@@ -60,11 +65,20 @@ public class RouteActivityLauncher {
             callback.onSuccess(uri, rule);
     }
 
-    private Intent createIntent(Context context, RouterRule rule, RouteTargetBundle targetBundle) {
+    private Intent createIntent(Context context, RouterRule rule, RouteUriInfo uriInfo, RouteTargetBundle targetBundle) {
         Intent intent = new Intent(context, rule.getTarget());
+
+        Map<String, String> params = uriInfo.params;
+        if (params != null && params.size() > 0) {
+            Set<String> keys = params.keySet();
+            for (String key : keys)
+                intent.putExtra(key, params.get(key));
+        }
+
         if (targetBundle.extras != null)
             intent.putExtras(targetBundle.extras);
         intent.addFlags(targetBundle.flags);
+
         return intent;
     }
 
