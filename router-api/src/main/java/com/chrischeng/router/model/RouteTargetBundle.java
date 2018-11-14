@@ -8,7 +8,7 @@ import com.chrischeng.router.interceptor.RouterInterceptor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteTargetBundle {
+public final class RouteTargetBundle {
 
     public int flags;
     public Bundle extras;

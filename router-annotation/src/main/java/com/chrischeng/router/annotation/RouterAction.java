@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
-public @interface RouterProtocal {
+public @interface RouterAction {
 
     String[] value();
 }

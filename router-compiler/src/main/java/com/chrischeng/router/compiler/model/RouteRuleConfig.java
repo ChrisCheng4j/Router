@@ -1,7 +1,7 @@
 package com.chrischeng.router.compiler.model;
 
+import com.chrischeng.router.annotation.RouterAction;
 import com.chrischeng.router.annotation.RouterInterceptor;
-import com.chrischeng.router.annotation.RouterProtocal;
 import com.chrischeng.router.compiler.exception.RouterAnnotationValueException;
 import com.squareup.javapoet.ClassName;
 
@@ -18,21 +18,21 @@ public class RouteRuleConfig {
     public String[] routes;
     public ClassName[] interceptors;
 
-    public static RouteRuleConfig create(RouteBasicConfig routeBasicConfig, RouterProtocal routerProtocal, TypeElement element) {
+    public static RouteRuleConfig create(RouteBasicConfig routeBasicConfig, RouterAction routerAction, TypeElement element) {
         RouteRuleConfig ruleConfig = new RouteRuleConfig();
         ruleConfig.element = element;
-        ruleConfig.routes = ruleConfig.combineRoutes(routeBasicConfig, routerProtocal, element);
+        ruleConfig.routes = ruleConfig.combineRoutes(routeBasicConfig, routerAction, element);
         ruleConfig.interceptors = ruleConfig.combineInterceptors(element);
         return ruleConfig;
     }
 
-    private String[] combineRoutes(RouteBasicConfig routeBasicConfig, RouterProtocal routerProtocal, TypeElement element) {
-        String[] routerRoutes = routerProtocal.value();
+    private String[] combineRoutes(RouteBasicConfig routeBasicConfig, RouterAction routerAction, TypeElement element) {
+        String[] routerRoutes = routerAction.value();
 
         if (routerRoutes.length == 0)
             return new String[]{};
 
-        String baseScheme = (routeBasicConfig != null) ? routeBasicConfig.baseScheme : "";
+        String baseScheme = (routeBasicConfig != null) ? routeBasicConfig.ruleScheme : "";
         URI uri;
         String scheme;
         String route;
@@ -43,7 +43,7 @@ public class RouteRuleConfig {
             scheme = uri.getScheme();
             if (scheme == null || scheme.length() == 0) {
                 if (baseScheme.length() == 0)
-                    throw new RouterAnnotationValueException(String.format("Could not found scheme with %1s annotated by %2s", element.getSimpleName(), RouterProtocal.class.getSimpleName()));
+                    throw new RouterAnnotationValueException(String.format("Could not found scheme with %1s annotated by %2s", element.getSimpleName(), RouterAction.class.getSimpleName()));
                 route = baseScheme + "://" + route;
                 routerRoutes[i] = route;
             }

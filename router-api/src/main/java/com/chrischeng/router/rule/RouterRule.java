@@ -2,7 +2,7 @@ package com.chrischeng.router.rule;
 
 import com.chrischeng.router.interceptor.RouterInterceptor;
 
-public class RouterRule {
+public final class RouterRule {
 
     private Class mTarget;
     private Class<? extends RouterInterceptor>[] mInterceptors;

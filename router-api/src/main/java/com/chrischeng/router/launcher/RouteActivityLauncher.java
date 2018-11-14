@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 
-import com.chrischeng.router.manager.RouteManager;
-import com.chrischeng.router.model.RouteTargetBundle;
 import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.exception.RouterActivityNotFoundException;
 import com.chrischeng.router.exception.RouterInterceptException;
 import com.chrischeng.router.interceptor.RouterInterceptor;
+import com.chrischeng.router.manager.RouteManager;
+import com.chrischeng.router.model.RouteTargetBundle;
 import com.chrischeng.router.parser.RouteUriInfo;
 import com.chrischeng.router.parser.RouteUriParser;
 import com.chrischeng.router.rule.RouterRule;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RouteActivityLauncher {
+public final class RouteActivityLauncher {
 
     public static RouteActivityLauncher getInstance() {
         return Holder.instance;

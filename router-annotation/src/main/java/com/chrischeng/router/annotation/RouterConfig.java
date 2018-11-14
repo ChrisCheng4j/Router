@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface RouterConfig {
 
-    String baseScheme() default "router";
+    String ruleScheme() default "router";
 
     String pkg() default "com.chrischeng.router";
 

@@ -1,5 +1,6 @@
-package com.chrischeng.router.compiler;
+package com.chrischeng.router.compiler.generator;
 
+import com.chrischeng.router.compiler.Constants;
 import com.chrischeng.router.compiler.exception.RouterInternalException;
 import com.chrischeng.router.compiler.model.RouteBasicConfig;
 import com.chrischeng.router.compiler.model.RouteRuleConfig;
@@ -23,9 +24,9 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.util.Elements;
 
-class RouteRuleGenerator {
+public class RouteRuleGenerator {
 
-    static void generateCode(RouteBasicConfig routeBasicConfig, List<RouteRuleConfig> rules) throws IOException {
+    public static void generateCode(RouteBasicConfig routeBasicConfig, List<RouteRuleConfig> rules) throws IOException {
         String creatorName = Constants.INTERFACE_CREATOR_RULE_FULL_NAME;
         TypeSpec.Builder typeBuilder = TypeSpec.classBuilder(Constants.GENERATE_CLASS_SIMPLE_NAME)
                 .addModifiers(Modifier.PUBLIC)

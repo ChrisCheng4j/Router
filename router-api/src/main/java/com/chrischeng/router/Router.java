@@ -3,12 +3,17 @@ package com.chrischeng.router;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 import com.chrischeng.router.launcher.RouteActivityLauncher;
 import com.chrischeng.router.manager.RouteManager;
 import com.chrischeng.router.model.RouteTargetBundle;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public final class Router {
 
@@ -19,13 +24,17 @@ public final class Router {
         RouteManager.getInstance().init(context);
     }
 
+    public static void setGlobalRouteScheme(String routeScheme) {
+        RouteManager.getInstance().setGlobalRouteScheme(routeScheme);
+    }
+
     private Router(Uri uri) {
         this.uri = uri;
         this.targetBundle = new RouteTargetBundle();
     }
 
-    public static Router create(String url) {
-        return new Router(Uri.parse(url));
+    public static UriBuilder createUriBuilder(String route) {
+        return new UriBuilder(route);
     }
 
     public Router addFlags(int flags) {
@@ -70,5 +79,53 @@ public final class Router {
 
     public void route(Context context) {
         RouteActivityLauncher.getInstance().launchActivity(context, uri, targetBundle);
+    }
+
+    private static Router create(String uri) {
+        return new Router(Uri.parse(RouteManager.getInstance().getCompleteUri(uri)));
+    }
+
+    public static class UriBuilder {
+
+        private String route;
+        private String scheme;
+        private Map<String, String> params;
+
+        public UriBuilder(String route) {
+            this.route = route;
+        }
+
+        public UriBuilder withScheme(String scheme) {
+            this.scheme = scheme;
+            return this;
+        }
+
+        public UriBuilder withParam(String key, String value) {
+            if (params == null)
+                params = new HashMap<>();
+            params.put(key, value);
+            return this;
+        }
+
+        public UriBuilder withParams(Map<String, String> params) {
+            if (this.params == null)
+                this.params = new HashMap<>();
+            this.params.putAll(params);
+            return this;
+        }
+
+        public Router build() {
+            if (TextUtils.isEmpty(route))
+                return null;
+
+            Uri.Builder builder = Uri.parse(TextUtils.isEmpty(scheme) ? route : scheme + "://" + route).buildUpon();
+            if (params != null) {
+                Set<String> keySet = params.keySet();
+                for (String key : keySet)
+                    builder.appendQueryParameter(key, params.get(key));
+            }
+
+            return Router.create(builder.build().toString());
+        }
     }
 }

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class RouteUriParser {
+public final class RouteUriParser {
 
     public static RouteUriInfo parse(Uri uri) {
         return new RouteUriInfo(parseRoute(uri), parseParams(uri));

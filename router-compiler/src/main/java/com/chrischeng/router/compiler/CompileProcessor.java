@@ -1,9 +1,10 @@
 package com.chrischeng.router.compiler;
 
+import com.chrischeng.router.annotation.RouterAction;
 import com.chrischeng.router.annotation.RouterConfig;
 import com.chrischeng.router.annotation.RouterInterceptor;
-import com.chrischeng.router.annotation.RouterProtocal;
 import com.chrischeng.router.compiler.exception.RouterAnnotationTargetException;
+import com.chrischeng.router.compiler.generator.RouteRuleGenerator;
 import com.chrischeng.router.compiler.model.RouteBasicConfig;
 import com.chrischeng.router.compiler.model.RouteRuleConfig;
 import com.chrischeng.router.compiler.tools.CompileTools;
@@ -40,8 +41,8 @@ public class CompileProcessor extends AbstractProcessor {
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> set = new HashSet<>();
 
+        set.add(RouterAction.class.getCanonicalName());
         set.add(RouterConfig.class.getCanonicalName());
-        set.add(RouterProtocal.class.getCanonicalName());
         set.add(RouterInterceptor.class.getCanonicalName());
 
         return set;
@@ -71,7 +72,7 @@ public class CompileProcessor extends AbstractProcessor {
     }
 
     private void processRules(RoundEnvironment roundEnv, RouteBasicConfig routeBasicConfig) {
-        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterProtocal.class);
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(RouterAction.class);
 
         if (elements == null || elements.isEmpty())
             return;
@@ -79,9 +80,9 @@ public class CompileProcessor extends AbstractProcessor {
         List<RouteRuleConfig> ruleConfigs = new ArrayList<>();
         for (Element element : elements) {
             if (element.getKind() != ElementKind.CLASS)
-                throw new RouterAnnotationTargetException(element.getSimpleName(), RouterProtocal.class, ElementKind.CLASS);
+                throw new RouterAnnotationTargetException(element.getSimpleName(), RouterAction.class, ElementKind.CLASS);
 
-            ruleConfigs.add(RouteRuleConfig.create(routeBasicConfig, element.getAnnotation(RouterProtocal.class), (TypeElement) element));
+            ruleConfigs.add(RouteRuleConfig.create(routeBasicConfig, element.getAnnotation(RouterAction.class), (TypeElement) element));
         }
 
         try {

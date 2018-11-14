@@ -1,6 +1,7 @@
 package com.chrischeng.router.manager;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.chrischeng.router.creator.IRouterRuleCreator;
 import com.chrischeng.router.interceptor.RouterInterceptor;
@@ -8,16 +9,16 @@ import com.chrischeng.router.parser.RouteUriInfo;
 import com.chrischeng.router.rule.RouterRule;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class RouteManager {
+public final class RouteManager {
 
     private static final String CLASS_RULE_CREATOR_SIMPLE_NAME = "RouterRuleCreator";
 
     private Context mContext;
+    private String mGlobalRouteScheme;
 
     private String[] mPkgs;
     private Map<String, Set<String>> mPkgRoutes;
@@ -38,6 +39,20 @@ public class RouteManager {
         return mContext;
     }
 
+    public void setGlobalRouteScheme(String routeScheme) {
+        mGlobalRouteScheme = routeScheme;
+    }
+
+    public String getCompleteUri(String uri) {
+        if (TextUtils.isEmpty(uri))
+            return "";
+
+        if (!uri.contains("://") && !TextUtils.isEmpty(mGlobalRouteScheme))
+            uri = mGlobalRouteScheme + "://" + uri;
+
+        return uri;
+    }
+
     public RouterRule findRule(RouteUriInfo routeUriInfo) {
         String route = routeUriInfo.route;
         if (mRouteRules.containsKey(route))
@@ -46,11 +61,10 @@ public class RouteManager {
     }
 
     public List<Class<? extends RouterInterceptor>> getPackageGlobalInterceptors(String uri) {
-        Iterator<Map.Entry<String, Set<String>>> iterator = mPkgRoutes.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry<String, Set<String>> entry = iterator.next();
-            if (entry.getValue().contains(uri))
-                return mPkgInterceptors.get(entry.getKey());
+        Set<String> keySet = mPkgRoutes.keySet();
+        for (String key : keySet) {
+            if (mPkgRoutes.get(key).contains(uri))
+                return mPkgInterceptors.get(key);
         }
 
         return null;

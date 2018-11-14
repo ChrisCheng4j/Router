@@ -14,5 +14,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Router.init(this);
+        Router.setGlobalRouteScheme("router");
     }
 }

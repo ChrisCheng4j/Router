@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.chrischeng.router.annotation.RouterInterceptor;
-import com.chrischeng.router.annotation.RouterProtocal;
+import com.chrischeng.router.annotation.RouterAction;
 import com.chrischeng.router.demo.R;
 import com.chrischeng.router.demo.interceptor.TargetActivityInterceptor;
 
 import java.util.Locale;
 
 @RouterInterceptor(TargetActivityInterceptor.class)
-@RouterProtocal("target")
+@RouterAction("target")
 public class TargetActivity extends AppCompatActivity {
 
     static final String KEY_YEAR = "year";

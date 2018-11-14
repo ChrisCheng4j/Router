@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.chrischeng.router.demo"
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -19,7 +19,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:25.3.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+
     api project(':router-api')
     annotationProcessor project(':router-compiler')
+
+//    implementation 'com.chrischeng:parceler:0.9.6'
+//    annotationProcessor 'com.chrischeng:parceler-compiler:0.9.6'
+
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
