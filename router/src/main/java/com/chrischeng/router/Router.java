@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.chrischeng.parceler.api.converter.ParcelJsonConverter;
 import com.chrischeng.router.callback.RouterCallback;
@@ -109,7 +108,6 @@ public final class Router {
         }
 
         public UriBuilder withParam(String key, String value) {
-            Log.d("aaa", value);
             if (params == null)
                 params = new HashMap<>();
             params.put(key, value);

@@ -5,3 +5,5 @@ dependencies {
 
 sourceCompatibility = "7"
 targetCompatibility = "7"
+
+apply from: 'https://raw.githubusercontent.com/ChrisCheng4j/LibPublisher/master/bintrayUpload.gradle'
