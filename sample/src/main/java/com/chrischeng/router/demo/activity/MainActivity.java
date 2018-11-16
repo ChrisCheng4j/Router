@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
@@ -13,13 +12,13 @@ import com.chrischeng.router.annotation.RouterAction;
 import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.demo.R;
 import com.chrischeng.router.demo.model.User;
-import com.chrischeng.router.demo.util.JsonUtils;
 import com.chrischeng.router.rule.RouterRule;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 @RouterAction("main")
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     static final int REQUEST_CODE = 1000;
 
@@ -48,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DATE);
 
+                String date = String.format(Locale.getDefault(), "%1d.%2d.%3d", year, month, day);
+
                 Router.createUriBuilder("target")
-                        .withParam("year", String.valueOf(year))
-                        .withParam("month", String.valueOf(month))
-                        .withParam("day", String.valueOf(day))
-                        .withParam("user", JsonUtils.toJson(new User("Chris", 26)))
+                        .withParam(TargetActivity.KEY_DATE, date)
+                        .withParam(TargetActivity.KEY_USER, new User("Chris", 26))
                         .build()
                         .setCallback(routerCallback)
                         .requestCode(REQUEST_CODE)

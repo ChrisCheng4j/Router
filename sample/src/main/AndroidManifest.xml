@@ -25,5 +25,10 @@
             android:screenOrientation="portrait"
             android:label="Target"/>
 
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"
+            android:label="Login"/>
+
     </application>
 </manifest>

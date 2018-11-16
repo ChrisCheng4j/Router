@@ -11,7 +11,7 @@ import com.chrischeng.router.exception.RouterActivityNotFoundException;
 import com.chrischeng.router.exception.RouterInterceptException;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 import com.chrischeng.router.manager.RouteManager;
-import com.chrischeng.router.model.RouteTargetBundle;
+import com.chrischeng.router.model.RouterTargetBundle;
 import com.chrischeng.router.parser.RouteUriInfo;
 import com.chrischeng.router.parser.RouteUriParser;
 import com.chrischeng.router.rule.RouterRule;
@@ -27,7 +27,7 @@ public final class RouteActivityLauncher {
         return Holder.instance;
     }
 
-    public void launchActivity(Context context, Uri uri, RouteTargetBundle targetBundle) {
+    public void launchActivity(Context context, Uri uri, RouterTargetBundle targetBundle) {
         if (context == null)
             context = RouteManager.getInstance().getContext();
 
@@ -65,7 +65,7 @@ public final class RouteActivityLauncher {
             callback.onSuccess(uri, rule);
     }
 
-    private Intent createIntent(Context context, RouterRule rule, RouteUriInfo uriInfo, RouteTargetBundle targetBundle) {
+    private Intent createIntent(Context context, RouterRule rule, RouteUriInfo uriInfo, RouterTargetBundle targetBundle) {
         Intent intent = new Intent(context, rule.getTarget());
 
         Map<String, String> params = uriInfo.params;
@@ -82,7 +82,7 @@ public final class RouteActivityLauncher {
         return intent;
     }
 
-    private boolean checkIntercept(Context context, Uri uri, RouterRule rule, RouteTargetBundle targetBundle, RouterCallback callback) {
+    private boolean checkIntercept(Context context, Uri uri, RouterRule rule, RouterTargetBundle targetBundle, RouterCallback callback) {
         try {
             iteratorAllInterceptors(context, uri, rule, targetBundle);
             targetBundle.removeAllInterceptors();
@@ -94,7 +94,7 @@ public final class RouteActivityLauncher {
         }
     }
 
-    private void iteratorAllInterceptors(Context context, Uri uri, RouterRule rule, RouteTargetBundle targetBundle) {
+    private void iteratorAllInterceptors(Context context, Uri uri, RouterRule rule, RouterTargetBundle targetBundle) {
         List<RouterInterceptor> interceptors = new ArrayList<>();
 
         List<Class<? extends RouterInterceptor>> pkgGlobalInterceptors = RouteManager.getInstance().getPackageGlobalInterceptors(uri.toString());

@@ -8,7 +8,7 @@ public final class RouteUriInfo {
     public String route;
     public Map<String, String> params;
 
-    protected RouteUriInfo(String route, Map<String, String> params) {
+    RouteUriInfo(String route, Map<String, String> params) {
         this.route = route;
         this.params = new HashMap<>();
         this.params.putAll(params);

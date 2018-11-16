@@ -3,35 +3,36 @@ package com.chrischeng.router.demo.activity;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import com.chrischeng.router.annotation.RouterInterceptor;
+import com.chrischeng.parceler.annotation.ParcelerArg;
 import com.chrischeng.router.annotation.RouterAction;
+import com.chrischeng.router.annotation.RouterInterceptor;
 import com.chrischeng.router.demo.R;
-import com.chrischeng.router.demo.interceptor.TargetActivityInterceptor;
+import com.chrischeng.router.demo.interceptor.LoginInterceptor;
+import com.chrischeng.router.demo.model.User;
 
 import java.util.Locale;
 
-@RouterInterceptor(TargetActivityInterceptor.class)
+@RouterInterceptor(LoginInterceptor.class)
 @RouterAction("target")
-public class TargetActivity extends AppCompatActivity {
+public class TargetActivity extends BaseActivity {
 
-    static final String KEY_YEAR = "year";
-    static final String KEY_MONTH = "month";
-    static final String KEY_DAY = "day";
+    static final String KEY_DATE = "date";
+    static final String KEY_USER = "user";
+
+    @ParcelerArg
+    String date;
+    @ParcelerArg
+    User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_target);
 
-        Bundle bundle = getIntent().getExtras();
-        if (bundle == null)
-            return;
-
-        String param = String.format(Locale.getDefault(), "%1s.%2s.%3s", bundle.get(KEY_YEAR), bundle.get(KEY_MONTH), bundle.get(KEY_DAY));
-        ((TextView) findViewById(R.id.tv_param)).setText(param);
+        ((TextView) findViewById(R.id.tv_date)).setText(date);
+        ((TextView) findViewById(R.id.tv_user)).setText(String.format(Locale.getDefault(), "%s %d", user.name, user.age));
     }
 
     @Override

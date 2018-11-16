@@ -24,8 +24,8 @@ dependencies {
     api project(':router-api')
     annotationProcessor project(':router-compiler')
 
-//    implementation 'com.chrischeng:parceler:0.9.6'
-//    annotationProcessor 'com.chrischeng:parceler-compiler:0.9.6'
+    implementation 'com.chrischeng:parceler:1.0.1'
+    annotationProcessor 'com.chrischeng:parceler-compiler:1.0.1'
 
     implementation 'com.google.code.gson:gson:2.8.5'
 }

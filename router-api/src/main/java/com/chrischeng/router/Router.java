@@ -4,12 +4,14 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.chrischeng.parceler.api.converter.ParcelJsonConverter;
 import com.chrischeng.router.callback.RouterCallback;
 import com.chrischeng.router.interceptor.RouterInterceptor;
 import com.chrischeng.router.launcher.RouteActivityLauncher;
 import com.chrischeng.router.manager.RouteManager;
-import com.chrischeng.router.model.RouteTargetBundle;
+import com.chrischeng.router.model.RouterTargetBundle;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +20,12 @@ import java.util.Set;
 public final class Router {
 
     private Uri uri;
-    private RouteTargetBundle targetBundle;
+    private RouterTargetBundle targetBundle;
+
+    private Router(Uri uri) {
+        this.uri = uri;
+        this.targetBundle = new RouterTargetBundle();
+    }
 
     public static void init(Context context) {
         RouteManager.getInstance().init(context);
@@ -28,9 +35,14 @@ public final class Router {
         RouteManager.getInstance().setGlobalRouteScheme(routeScheme);
     }
 
-    private Router(Uri uri) {
-        this.uri = uri;
-        this.targetBundle = new RouteTargetBundle();
+    public static Router resume(Uri uri, RouterTargetBundle bundle) {
+        Router router = Router.create(uri.toString());
+        router.targetBundle = bundle;
+        return router;
+    }
+
+    public static Router create(String uri) {
+        return new Router(Uri.parse(RouteManager.getInstance().getCompleteUri(uri)));
     }
 
     public static UriBuilder createUriBuilder(String route) {
@@ -81,10 +93,6 @@ public final class Router {
         RouteActivityLauncher.getInstance().launchActivity(context, uri, targetBundle);
     }
 
-    private static Router create(String uri) {
-        return new Router(Uri.parse(RouteManager.getInstance().getCompleteUri(uri)));
-    }
-
     public static class UriBuilder {
 
         private String route;
@@ -101,10 +109,15 @@ public final class Router {
         }
 
         public UriBuilder withParam(String key, String value) {
+            Log.d("aaa", value);
             if (params == null)
                 params = new HashMap<>();
             params.put(key, value);
             return this;
+        }
+
+        public UriBuilder withParam(String key, Object param) {
+            return withParam(key, param.getClass().isPrimitive() || String.class.isInstance(param) ? String.valueOf(param) : ParcelJsonConverter.toJson(param));
         }
 
         public UriBuilder withParams(Map<String, String> params) {
